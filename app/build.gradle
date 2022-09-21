@@ -19,10 +19,21 @@ android {
         }
     }
 
+    signingConfigs {
+        release {
+            storeFile file(System.getenv("HOME") + "/Documents/Keystore/friends.jks")
+            storePassword System.getenv("KeystorePassword")
+            keyAlias System.getenv("KeyAlias")
+            keyPassword System.getenv("KeystorePassword")
+
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -41,6 +52,12 @@ android {
     packagingOptions {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
+
+    testOptions.unitTests.all {
+        testLogging {
+            events 'passed', 'failed', 'skipped', 'standardOut', 'standardError'
         }
     }
 }
