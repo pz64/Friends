@@ -1,42 +1,47 @@
 name: Publish
+
+
 on:
   push:
     branches: [ "main" ]
 
 jobs:
 
-  test-and-distribute:
+  build_and_distribute:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
+      - uses: actions/checkout@v3
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: gradle
 
-    - name: Assemble Release Bundle
-      run:  |
-        ./gradlew bundleRelease
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
-    - name: Sign Release
-      uses: r0adkll/sign-android-release@v1
-      with:
-        releaseDirectory: app/build/output/bundle/release
-        signingKeyBase64: ${{ secrets.ANDROIDKEYSTORE }}
-        alias: ${{ secrets.KEYALIAS }}
-        keyStorePassword: ${{ secrets.KEYSTOREPASSWORD }}
-        keyPassword: ${{ secrets.KEYSTOREPASSWORD }}
+      - name: Assemble Release Bundle
+        run: |
+          ./gradlew bundleRelease
 
-     - name: Create service_account.json
-       run: echo '${{ secrets.GOOGLESERVICEAPI }}' > service_account.json
+      - name: Sign Release
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/output/bundle/release
+          signingKeyBase64: ${{ secrets.ANDROIDKEYSTORE }}
+          alias: ${{ secrets.KEYALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTOREPASSWORD }}
+          keyPassword: ${{ secrets.KEYSTOREPASSWORD }}
 
-     - name: Deploy to Alpha
-       uses: r0adkll/upload-google-play@v1
-       with:
-         serviceAccountJson: service_account.json
-         packageName: pz64.friends
-         releaseFiles: app/build/outputs/bundle/release/app-release.aab
-         track: alpha
-         whatsNewDirectory: whatsNewDirectory/
+      - name: Create service_account.json
+        run: echo '${{ secrets.GOOGLESERVICEAPI }}' > service_account.json
+
+      - name: Deploy to Alpha
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: service_account.json
+          packageName: pz64.friends
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: alpha
+          whatsNewDirectory: whatsNewDirectory/
