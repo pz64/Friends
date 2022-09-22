@@ -10,8 +10,8 @@ android {
         applicationId "pz64.friends"
         minSdk 26
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -19,21 +19,19 @@ android {
         }
     }
 
-    signingConfigs {
-        release {
-            storeFile file(System.getenv("Home") + "/Documents/Keystore/friends.jks")
-            storePassword System.getenv("KeystorePassword")
-            keyAlias System.getenv("KeyAlias")
-            keyPassword System.getenv("KeystorePassword")
-
-        }
-    }
-
+//    signingConfigs {
+//        release {
+//            storeFile file(System.getenv("Home") + "/Documents/Keystore/friends.jks")
+//            storePassword System.getenv("KeystorePassword")
+//            keyAlias System.getenv("KeyAlias")
+//            keyPassword System.getenv("KeystorePassword")
+//        }
+//    }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
     }
     compileOptions {

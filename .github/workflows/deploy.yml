@@ -6,7 +6,6 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build_and_distribute:
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +27,7 @@ jobs:
       - name: Sign Release
         uses: r0adkll/sign-android-release@v1
         with:
-          releaseDirectory: app/build/output/bundle/release
+          releaseDirectory: app/build/outputs/bundle/release
           signingKeyBase64: ${{ secrets.ANDROIDKEYSTORE }}
           alias: ${{ secrets.KEYALIAS }}
           keyStorePassword: ${{ secrets.KEYSTOREPASSWORD }}
@@ -43,5 +42,6 @@ jobs:
           serviceAccountJson: service_account.json
           packageName: pz64.friends
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: alpha
-          whatsNewDirectory: whatsNewDirectory/
+          track: internal
+          status: draft
+          whatsNewDirectory: whatsNew/
