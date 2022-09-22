@@ -21,7 +21,7 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(System.getenv("HOME") + "/Documents/Keystore/friends.jks")
+            storeFile file(System.getenv("Home") + "/Documents/Keystore/friends.jks")
             storePassword System.getenv("KeystorePassword")
             keyAlias System.getenv("KeyAlias")
             keyPassword System.getenv("KeystorePassword")
